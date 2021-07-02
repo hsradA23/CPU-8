@@ -1,6 +1,7 @@
 #![allow(non_snake_case)]
 #![allow(unused_variables)]
 use std::fs;
+use std::env;
 
 const MAX_MEM: usize = 1024 * 64;
 
@@ -227,9 +228,9 @@ impl CPU{
 	}
 }
 
-fn load(Mem : &mut [usize]) {
+fn load(Mem : &mut [usize], filename : &str) {
     //Reads the assmebly from the given file and puts it in the memory
-    let contents = fs::read_to_string("INSTRUCTIONS")
+    let contents = fs::read_to_string(filename)
         .expect("Something went wrong reading the file");
 
     let mut i = 100;
@@ -262,10 +263,12 @@ fn load(Mem : &mut [usize]) {
 }
 
 fn main() {
+    let args: Vec<String> = env::args().collect();
+    let filename = &args[1];
 	let mut Mem: [usize; MAX_MEM] = [0; MAX_MEM]; // This is the memory for the CPU
 	let mut cpu = CPU::new();	 // The main CPU instance
 	cpu.Reset();
 
-    load(&mut Mem);
+    load(&mut Mem, filename);
     cpu.exec(&mut Mem);
 }

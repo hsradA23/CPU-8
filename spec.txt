@@ -1,0 +1,26 @@
+0 -> A
+1 -> X
+2 -> Y
+
+
+---INSTRUCTIONS---
+NOP
+LDA value
+ADD value
+JNE value
+CMP value
+OR
+AND
+PUSH
+POP
+OUTI addr
+OUTC
+LD addr
+JLT value
+JGT value
+CMX value
+CMY value
+LDX value
+LDY value
+ADR address
+LDR destination source

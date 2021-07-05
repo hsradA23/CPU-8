@@ -15,10 +15,10 @@ pub struct CPU{
 	pub Y: usize,    // Index register Y
 
 	//PROCESSOR STATUS
-	pub CF: bool, // Carry Flag
-	pub ZF: bool, // Zero Flag
-	pub OF: bool, // Overflow Flag
-	pub NF: bool, // Negative Flag
+	pub CF: bool,    // Carry Flag
+	pub ZF: bool,    // Zero Flag
+	pub OF: bool,    // Overflow Flag
+	pub NF: bool,    // Negative Flag
 }
 
 impl CPU{
@@ -39,7 +39,7 @@ impl CPU{
 	pub fn new() -> Self{
 		CPU{
 			PC : 0,
-			SP : 0x00FF,
+			SP : 50,
 
 			A : 0,
 			X : 0,
@@ -110,6 +110,12 @@ impl CPU{
                 //POP
             }
             9 => {
+                //OUTI
+                self.PC += 1;
+                let address = Mem[self.PC];
+                println!("{}", Mem[address])
+            }
+            10 => {
                 //OUTI
                 self.PC += 1;
                 let address = Mem[self.PC];
@@ -212,7 +218,6 @@ impl CPU{
                 let address1 = Mem[self.PC];
                 self.PC += 1;
                 let address2 = Mem[self.PC];
-
                 Mem[address1] = Mem[address2];
             }
 
@@ -236,26 +241,26 @@ fn load(Mem : &mut [usize], filename : &str) {
     let mut i = 100;
     for x in contents.split_whitespace(){
         match x {
-            "NOP"  => Mem[i] = 0x0,   // DONE
-            "LDA"  => Mem[i] = 0x1,   // DONE
-            "ADD"  => Mem[i] = 0x2,   // DONE
-            "JNE"  => Mem[i] = 0x3,   // DONE
-            "CMP"  => Mem[i] = 0x4,   // DONE
-            "OR"   => Mem[i] = 0x5,
-            "AND"  => Mem[i] = 0x6,
-            "PUSH" => Mem[i] = 0x7,
-            "POP"  => Mem[i] = 0x8,
-            "OUTI" => Mem[i] = 0x9,   // DONE
-            "OUTC" => Mem[i] = 0xA,
-            "LD"   => Mem[i] = 0xB,   // DONE
-            "JLT"  => Mem[i] = 0xC,   // DONE
-            "JGT"  => Mem[i] = 0xD,   // DONE
-            "CPX"  => Mem[i] = 0xE,   // DONE
-            "CPY"  => Mem[i] = 0xF,   // DONE
-            "LDX"  => Mem[i] = 0x11,  // DONE
-            "LDY"  => Mem[i] = 0x12,  // DONE
-            "ADR"  => Mem[i] = 0x13,  // DONE
-            "LDR"  => Mem[i] = 0x14,  // DONE
+            "NOP"  => Mem[i] =  0x0,   // DONE
+            "LDA"  => Mem[i] =  0x1,   // DONE
+            "ADD"  => Mem[i] =  0x2,   // DONE
+            "JNE"  => Mem[i] =  0x3,   // DONE
+            "CMP"  => Mem[i] =  0x4,   // DONE
+            "OR"   => Mem[i] =  0x5,
+            "AND"  => Mem[i] =  0x6,
+            "PUSH" => Mem[i] =  0x7,
+            "POP"  => Mem[i] =  0x8,
+            "OUTI" => Mem[i] =  0x9,   // DONE
+            "OUTC" => Mem[i] =  0xA,
+            "LD"   => Mem[i] =  0xB,   // DONE
+            "JLT"  => Mem[i] =  0xC,   // DONE
+            "JGT"  => Mem[i] =  0xD,   // DONE
+            "CMX"  => Mem[i] =  0xE,   // DONE
+            "CMY"  => Mem[i] =  0xF,   // DONE
+            "LDX"  => Mem[i] = 0x11,   // DONE
+            "LDY"  => Mem[i] = 0x12,   // DONE
+            "ADR"  => Mem[i] = 0x13,   // DONE
+            "LDR"  => Mem[i] = 0x14,   // DONE
             _      => Mem[i] = x.parse().unwrap()
         }
         i+=1;
@@ -266,7 +271,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     let filename = &args[1];
 	let mut Mem: [usize; MAX_MEM] = [0; MAX_MEM]; // This is the memory for the CPU
-	let mut cpu = CPU::new();	 // The main CPU instance
+	let mut cpu = CPU::new();	                  // The main CPU instance
 	cpu.Reset();
 
     load(&mut Mem, filename);
